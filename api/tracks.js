@@ -16,7 +16,3 @@ router.param("id", async (req, res, next, id) => {
   req.track = track;
   next();
 });
-
-router.get("/:id", (req, res) => {
-  res.send(req.track);
-});
