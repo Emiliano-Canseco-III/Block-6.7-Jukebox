@@ -1,6 +1,6 @@
 import db from "#db/client";
 
-export async function createPlaylistTracks(playlistId, trackId) {
+export async function createPlaylistTrack(playlistId, trackId) {
   const sql = `
     INSERT INTO playlists_tracks
         (playlist_id, track_id)
