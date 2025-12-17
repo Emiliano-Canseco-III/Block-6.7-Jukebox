@@ -13,3 +13,12 @@ export async function createTrack(name, duration_ms) {
   } = await db.query(sql, [name, duration_ms]);
   return track;
 }
+
+export async function getTracks() {
+  const sql = `
+  SELECT *
+  FROM tracks
+  `;
+  const { rows: tracks } = await db.query(sql);
+  return tracks;
+}
