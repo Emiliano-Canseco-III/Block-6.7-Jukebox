@@ -21,7 +21,6 @@ async function seed() {
   for (let i = 1; i <= 15; i++) {
     const playlistId = 1 + Math.floor(Math.random() * 10);
     const trackId = 1 + Math.floor(Math.random() * 20);
-
     // Will catches any duplicate errors and keeps the seed running.
     try {
       await createPlaylistTrack(playlistId, trackId);
