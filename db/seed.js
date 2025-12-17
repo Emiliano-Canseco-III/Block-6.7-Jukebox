@@ -11,11 +11,12 @@ console.log("🌱 Database seeded.");
 
 async function seed() {
   for (let i = 1; i <= 10; i++) {
-    await createPlaylist("Playlist " + i);
+    await createPlaylist("Playlist ", "Description " + ((i % 2) + 1));
   }
 
   for (let i = 1; i <= 20; i++) {
-    await createTrack("Track " + i);
+    const duration = 1 + Math.floor(Math.random() * (300 - 120 + 1)) + 120;
+    await createTrack("Track " + i, duration);
   }
 
   for (let i = 1; i <= 15; i++) {
