@@ -3,9 +3,9 @@ import db from "#db/client";
 export async function createPlaylist(name) {
   const sql = `
     INSERT INTO playlists
-        (name, description)
+        (name)
     VALUES
-        ($1, $2)
+        ($1)
     RETURNING *
     `;
   const {
