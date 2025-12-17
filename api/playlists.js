@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
-export default router;
 
 import { createPlaylist, getPlaylists } from "#db/queries/playlists";
+import { createPlaylistTrack } from "#db/queries/playlists_tracks";
 import { getPlaylistById } from "#db/queries/playlists";
 import { getTracksByPlaylistId } from "#db/queries/tracks";
 
@@ -12,8 +12,15 @@ router.get("/", async (req, res) => {
 });
 
 router.param("id", async (req, res, next, id) => {
+  if (isNaN(id)) {
+    return res.status(400).send("ID must be a number.");
+  }
+
   const playlist = await getPlaylistById(id);
-  if (!playlist) return res.status(404).send("Playlist not found.");
+
+  if (!playlist) {
+    return res.status(404).send("Playlist not found.");
+  }
 
   req.playlist = playlist;
   next();
@@ -39,3 +46,36 @@ router.post("/", async (req, res) => {
   const playlist = await createPlaylist(name, description);
   res.status(201).send(playlist);
 });
+
+router.post("/:id/tracks", async (req, res, next) => {
+  try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).send("Request body is missing");
+    }
+
+    const { trackId } = req.body;
+
+    if (trackId === undefined || trackId === null) {
+      return res.status(400).send("trackId required");
+    }
+
+    if (isNaN(trackId)) {
+      return res.status(400).send("trackId must be a number");
+    }
+
+    const result = await createPlaylistTrack(req.playlist.id, trackId);
+    res.status(201).send(result);
+  } catch (error) {
+    if (error.code === "23505") {
+      return res.status(400).send("Track already in playlist");
+    }
+
+    if (error.code === "23503") {
+      return res.status(400).send("Track does not exist");
+    }
+
+    next(error);
+  }
+});
+
+export default router;

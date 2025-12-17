@@ -32,4 +32,5 @@ export async function getPlaylistById(id) {
   const {
     rows: [playlist],
   } = await db.query(sql, [id]);
+  return playlist;
 }
