@@ -11,7 +11,7 @@ console.log("🌱 Database seeded.");
 
 async function seed() {
   for (let i = 1; i <= 10; i++) {
-    await createPlaylist("Playlist ", "Description " + ((i % 2) + 1));
+    await createPlaylist("Playlist " + i, "Description " + ((i % 10) + 1));
   }
 
   for (let i = 1; i <= 20; i++) {
