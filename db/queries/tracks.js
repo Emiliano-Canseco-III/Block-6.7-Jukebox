@@ -22,3 +22,29 @@ export async function getTracks() {
   const { rows: tracks } = await db.query(sql);
   return tracks;
 }
+
+export async function getTrackById(id) {
+  const sql = `
+  SELECT * 
+  FROM tracks
+  WHERE id = $1
+  `;
+  const {
+    rows: [track],
+  } = await db.query(sql, [id]);
+  return track;
+}
+
+export async function getTracksByPlaylistId(id) {
+  const sql = `
+  SELECT DISTINCT tracks.
+  FROM
+    playlists_tracks
+    JOIN playlists ON playlists_tracks.playlist_id = playlists.id
+    JOIN tracks ON playlists_tracks.track_id = tracks.id
+  WHERE
+    playlists.id = $1
+  `;
+  const { rows: patients } = await db.query(sql, [id]);
+  return tracks;
+}
